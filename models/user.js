@@ -1,6 +1,6 @@
-// const bcrypt = require('bcrypt-nodejs');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const bcrypt = require('bcrypt');
 
 const UserSchema = new Schema(
   {
@@ -55,47 +55,34 @@ UserSchema.virtual('full_name').get(function() {
   return `${this.first_name} ${this.last_name}`;
 });
 
-// UserSchema.pre('save', function(next) {
-//   const user = this;
-//   if (!user.isModified('password')) {
-//     return next();
-//   }
-//   bcrypt.genSalt(10, (err, salt) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     bcrypt.hash(user.password, salt, null, (err, hash) => {
-//       if (err) {
-//         return next(err);
-//       }
-//       user.password = hash;
+UserSchema.pre('save', function(next) {
+  const user = this;
+  if (!user.isModified('password')) {
+    return next();
+  }
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(user.password, salt, function(err, hash) {
+      if (err) {
+        return next(err);
+      }
+      user.password = hash;
 
-//       var currentDate = new Date();
-//       user.updated_at = currentDate;
-//       if (!user.created_at) {
-//         user.created_at = currentDate;
-//       }
-//       next();
-//     });
-//   });
-// });
+      const currentDate = new Date();
+      user.updated_at = currentDate;
+      if (!user.created_at) {
+        user.created_at = currentDate;
+      }
+      next();
+    });
+  });
+});
 
-// UserSchema.methods.comparePassword = function comparePassword(
-//   candidatePassword,
-//   cb
-// ) {
-//   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-//     cb(err, isMatch);
-//   });
-// };
-UserSchema.methods.comparePassword = function(candidatePassword, callback) {
-  // bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-  //   if (err) {
-  //     return callback(err);
-  //   }
-  //   callback(null, isMatch);
-  // });
-  callback(null, true);
+UserSchema.methods.comparePassword = async (
+  candidatePassword,
+  userPassword
+) => {
+  const match = await bcrypt.compare(candidatePassword, userPassword);
+  return match;
 };
 
 module.exports = mongoose.model('user', UserSchema);
