@@ -10,6 +10,7 @@ const comparePassword = async (candidatePassword, userPassword) => {
   //   console.log('isMatch in ps', isMatch);
   //   return isMatch;
   // });
+  console.log(match);
   return match;
 };
 
@@ -19,19 +20,7 @@ passport.use(
       usernameField: 'email',
       passReqToCallback: true
     },
-    function(req, email, password, done) {
-      // User.findOne({ email: email }, function(err, user) {
-      //   if (err) {
-      //     return done(err);
-      //   }
-      //   if (!user) {
-      //     return done(null, false);
-      //   }
-      //   if (!user.verifyPassword(password)) {
-      //     return done(null, false);
-      //   }
-      //   return done(null, user);
-      // });
+    (req, email, password, done) => {
       User.findOne({ email: email }, function(err, user) {
         if (err) {
           return done(err);
@@ -40,16 +29,17 @@ passport.use(
           return done(null, false);
         }
 
-        console.log(user.comparePassword(password));
-        console.log(comparePassword(password, user.password));
-
-        // issue here. this gets called before comparePassword returns true
-        if (!user.comparePassword(password)) {
-          console.log('compare inside');
-          return done(null, false);
-        }
-        console.log('user ', user);
-        return done(null, user);
+        user
+          .comparePassword(password, user.password)
+          .then(match => {
+            if (match) {
+              console.log('compare inside');
+              return done(null, user);
+            } else {
+              return done(null, false);
+            }
+          })
+          .catch(err => done(err));
       });
     }
   )

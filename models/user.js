@@ -77,12 +77,8 @@ UserSchema.pre('save', function(next) {
   });
 });
 
-UserSchema.methods.comparePassword = async (
-  candidatePassword,
-  userPassword
-) => {
-  const match = await bcrypt.compare(candidatePassword, userPassword);
-  return match;
+UserSchema.methods.comparePassword = (candidatePassword, password) => {
+  return bcrypt.compare(candidatePassword, password);
 };
 
 module.exports = mongoose.model('user', UserSchema);
