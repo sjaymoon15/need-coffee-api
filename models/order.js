@@ -20,4 +20,4 @@ const OrderSchema = new Schema({
   completed: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.model('order', OrderSchema);
+mongoose.model('Order', OrderSchema);

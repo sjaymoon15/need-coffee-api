@@ -77,8 +77,9 @@ UserSchema.pre('save', function(next) {
   });
 });
 
-UserSchema.methods.comparePassword = (candidatePassword, password) => {
-  return bcrypt.compare(candidatePassword, password);
+UserSchema.methods.comparePassword = function(candidatePassword) {
+  const user = this;
+  return bcrypt.compare(candidatePassword, user.password);
 };
 
-module.exports = mongoose.model('user', UserSchema);
+mongoose.model('User', UserSchema);

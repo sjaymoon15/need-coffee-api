@@ -14,4 +14,4 @@ const DrinkSchema = new Schema({
   milk_options: []
 });
 
-module.exports = mongoose.model('drink', DrinkSchema);
+mongoose.model('Drink', DrinkSchema);
