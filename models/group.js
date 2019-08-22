@@ -6,18 +6,27 @@ const GroupSchema = new Schema({
     type: String,
     required: true,
     text: true,
-    trim: true
+    trim: true,
+    unique: true,
+    minlength: 5,
+    maxlength: 20
   },
   members: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'user'
+      ref: 'User'
+    }
+  ],
+  admins: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
     }
   ],
   order_history: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'order'
+      ref: 'Order'
     }
   ]
 });

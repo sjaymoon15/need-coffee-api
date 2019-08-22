@@ -4,18 +4,18 @@ const { Schema } = mongoose;
 const OrderSchema = new Schema({
   group: {
     type: Schema.Types.ObjectId,
-    ref: 'group'
+    ref: 'Group'
   },
   date: { type: Date, default: Date.now },
   requests: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'request'
+      ref: 'Request'
     }
   ],
   fetched_by: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'User'
   },
   completed: { type: Boolean, default: false }
 });

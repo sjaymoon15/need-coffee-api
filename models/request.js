@@ -4,11 +4,11 @@ const { Schema } = mongoose;
 const RequestSchema = new Schema({
   request_by: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'User'
   },
   drink: {
     type: Schema.Types.ObjectId,
-    ref: 'drink'
+    ref: 'Drink'
   },
   selected_size: String,
   selected_milk: String,

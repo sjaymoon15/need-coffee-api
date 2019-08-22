@@ -6,7 +6,7 @@ const StoreSchema = new Schema({
   drinks: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'drink'
+      ref: 'Drink'
     }
   ]
 });

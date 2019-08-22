@@ -28,21 +28,21 @@ const UserSchema = new Schema(
     admins: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'company'
+        ref: 'Group'
       }
     ],
     favorite_request: {
       type: Schema.Types.ObjectId,
-      ref: 'request'
+      ref: 'Request'
     },
     last_request: {
       type: Schema.Types.ObjectId,
-      ref: 'request'
+      ref: 'Request'
     },
     request_history: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'request'
+        ref: 'Request'
       }
     ],
     updated_at: Date,
