@@ -51,4 +51,14 @@ router.post('/signin', async (req, res) => {
   }
 });
 
+router.get('/user', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    res.send(user);
+  } catch (err) {
+    return res.status(422).send({ error: `Can't find the user email` });
+  }
+});
+
 module.exports = router;
