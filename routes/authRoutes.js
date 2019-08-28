@@ -51,11 +51,13 @@ router.post('/signin', async (req, res) => {
   }
 });
 
-router.get('/user', async (req, res) => {
+router.post('/user', async (req, res) => {
   const { email } = req.body;
+  const searchKey = new RegExp(email, 'i');
+
   try {
-    const user = await User.findOne({ email });
-    res.send(user);
+    const users = await User.find({ email: searchKey }).limit(10);
+    res.send(users);
   } catch (err) {
     return res.status(422).send({ error: `Can't find the user email` });
   }
