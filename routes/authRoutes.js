@@ -8,6 +8,11 @@ const router = express.Router();
 
 router.post('/signup', async (req, res) => {
   const { email, password, first_name, last_name } = req.body;
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    return res.status(422).send({ error: 'Email is in use' });
+  }
 
   try {
     const user = new User({

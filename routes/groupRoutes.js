@@ -14,4 +14,23 @@ router.get('/groups', async (req, res) => {
   res.send(groups);
 });
 
+router.post('/groups', async (req, res) => {
+  const { name } = req.body;
+  const existingGroup = await Group.findOne({ name });
+
+  if (existingGroup) {
+    return res.status(422).send({ error: 'Group Name is in use' });
+  }
+
+  try {
+    const group = new Group({
+      name
+    });
+    await group.save();
+
+    res.send(group);
+  } catch (err) {
+    return res.status(422).send(err.message);
+  }
+});
 module.exports = router;
