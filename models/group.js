@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const shortid = require('shortid');
 
 const GroupSchema = new Schema({
   name: {
@@ -29,6 +30,13 @@ const GroupSchema = new Schema({
       ref: 'Order'
     }
   ]
+});
+
+GroupSchema.pre('save', function(next) {
+  const group = this;
+  const uniqueGroupName = `${group.name}_${shortid.generate()}`;
+  group.name = uniqueGroupName;
+  next();
 });
 
 mongoose.model('Group', GroupSchema);
