@@ -31,6 +31,12 @@ const UserSchema = new Schema(
         ref: 'Group'
       }
     ],
+    groups: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+      }
+    ],
     favorite_request: {
       type: Schema.Types.ObjectId,
       ref: 'Request'
